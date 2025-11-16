@@ -189,28 +189,22 @@ function parseInstructionText(instruction) {
     const creditAccountId = normalized.substring(creditStart, creditEnd).trim();
     parsed.creditAccount = creditAccountId;
   } else {
-    // CREDIT [amount] [currency] TO ACCOUNT [id] FOR DEBIT FROM ACCOUNT [id] [ON [date]]
+    // CREDIT [amount] [currency] TO ACCOUNT [id] FROM ACCOUNT [id] [ON [date]]
 
     // Check required keywords exist
-    if (toPos === -1 || forPos === -1 || fromPos === -1) {
+    if (toPos === -1 || fromPos === -1) {
       throwAppError(PaymentMessages.MISSING_KEYWORD, ERROR_CODE.INVLDDATA);
     }
 
-    // Check keyword order: TO < FOR < FROM
-    if (!(toPos < forPos && forPos < fromPos)) {
+    // Check keyword order: TO < FROM
+    if (!(toPos < fromPos)) {
       throwAppError(PaymentMessages.INVALID_ORDER, ERROR_CODE.INVLDDATA);
     }
 
     // Check "TO ACCOUNT" pattern
     const toAccountPos = upperInstruction.indexOf(accountWord, toPos);
-    if (toAccountPos === -1 || toAccountPos > forPos) {
+    if (toAccountPos === -1 || toAccountPos > fromPos) {
       throwAppError(PaymentMessages.INVALID_ORDER, ERROR_CODE.INVLDDATA);
-    }
-
-    // Check "FOR DEBIT" pattern
-    const debitPos = upperInstruction.indexOf(' DEBIT', forPos);
-    if (debitPos === -1 || debitPos > fromPos) {
-      throwAppError(PaymentMessages.MISSING_KEYWORD, ERROR_CODE.INVLDDATA);
     }
 
     // Check "FROM ACCOUNT" pattern
@@ -231,9 +225,9 @@ function parseInstructionText(instruction) {
     parsed.amount = amount;
     parsed.currency = currency.toUpperCase();
 
-    // Extract credit account (after TO ACCOUNT, before FOR)
+    // Extract credit account (after TO ACCOUNT, before FROM)
     const creditStart = toAccountPos + accountWord.length;
-    const creditAccountId = normalized.substring(creditStart, forPos).trim();
+    const creditAccountId = normalized.substring(creditStart, fromPos).trim();
     parsed.creditAccount = creditAccountId;
 
     // Extract debit account (after FROM ACCOUNT)
