@@ -1,14 +1,12 @@
 # Payment Instruction Parser API
 
-## 🚀 Live Endpoint
-
 **Deployed on Render.com (FREE)**
 
 ```
 https://payment-instruction-parser-qu7j.onrender.com/payment-instructions
 ```
 
-### ⚠️ Important: Free Tier Limitations
+### Important: Free Tier Limitations
 
 **Free services "spin down" after 15 minutes of inactivity.**
 
@@ -17,11 +15,11 @@ https://payment-instruction-parser-qu7j.onrender.com/payment-instructions
 
 ---
 
-## 📋 Test Examples
+## Test Examples
 
 Copy and paste these commands directly into PowerShell to test the live endpoint:
 
-### ✅ Success Cases
+### Success Cases
 
 #### 1. Basic DEBIT Transaction
 ```powershell
@@ -55,7 +53,7 @@ $body = '{"accounts": [{"id": "x", "balance": 1000, "currency": "NGN"}, {"id": "
 
 ---
 
-### ❌ Error Cases (HTTP 400)
+### Error Cases (HTTP 400)
 
 #### 6. Insufficient Funds (AC01)
 ```powershell
@@ -89,7 +87,7 @@ $body = '{"accounts": [{"id": "a", "balance": 500, "currency": "USD"}], "instruc
 
 ---
 
-## 📦 Supported Formats
+## Supported Formats
 
 ### DEBIT Format
 ```
